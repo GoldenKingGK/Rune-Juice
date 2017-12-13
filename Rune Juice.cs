@@ -108,7 +108,7 @@ namespace Rune_Juice
 
         }
 
-        System.Media.SoundPlayer snd = new System.Media.SoundPlayer(Properties.Resources.iPappy);
+        System.Media.SoundPlayer snd = new System.Media.SoundPlayer(Properties.Resources.Intro);
 
         [DllImport("winmm.dll")]
         public static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);
@@ -362,6 +362,113 @@ namespace Rune_Juice
 
         //END FUNCTION: CREATES RUNE PAGE
 
+
+
+
+
+
+        private void SelectPrimaryRune (string s_Rune)
+        {
+            int[] aMouseMovement = { 0, 0 };
+            if (b_InChampSelect & b_NewRunePage)
+            {
+                switch (s_Rune)
+                {
+                    case "Precision":
+                        aMouseMovement = GetCorrectMousePosition(-500, 0);
+                        break;
+                    case "Domination":
+                        aMouseMovement = GetCorrectMousePosition(-250, 0);
+                        break;
+                    case "Sorcery":
+                        aMouseMovement = GetCorrectMousePosition(0, 0);
+                        break;
+                    case "Resolve":
+                        aMouseMovement = GetCorrectMousePosition(250, 0);
+                        break;
+                    case "Inspiration":
+                        aMouseMovement = GetCorrectMousePosition(500, 0);
+                        break;
+                }
+            }
+            else if (!b_InChampSelect & b_NewRunePage)
+            {
+                switch (s_Rune)
+                {
+                    case "Precision":
+                        aMouseMovement = GetCorrectMousePosition(-600, 0);
+                        break;
+                    case "Domination":
+                        aMouseMovement = GetCorrectMousePosition(-300, 0);
+                        break;
+                    case "Sorcery":
+                        aMouseMovement = GetCorrectMousePosition(-100, 0);
+                        break;
+                    case "Resolve":
+                        aMouseMovement = GetCorrectMousePosition(100, 0);
+                        break;
+                    case "Inspiration":
+                        aMouseMovement = GetCorrectMousePosition(300, 0);
+                        break;
+                }
+            }
+            else if (b_InChampSelect & !b_NewRunePage)
+            {
+                // Click Toggle View
+                aMouseMovement = GetCorrectMousePosition(-575, 400);
+                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+                switch (s_Rune)
+                {
+                    case "Precision":
+                        aMouseMovement = GetCorrectMousePosition(-500, -200);
+                        break;
+                    case "Domination":
+                        aMouseMovement = GetCorrectMousePosition(-450, -200);
+                        break;
+                    case "Sorcery":
+                        aMouseMovement = GetCorrectMousePosition(-400, -200);
+                        break;
+                    case "Resolve":
+                        aMouseMovement = GetCorrectMousePosition(-350, -200);
+                        break;
+                    case "Inspiration":
+                        aMouseMovement = GetCorrectMousePosition(-300, -200);
+                        break;
+                }
+            }
+            else if (!b_InChampSelect & !b_NewRunePage)
+            {
+                // Click Toggle View
+                aMouseMovement = GetCorrectMousePosition(-700, 400);
+                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+                switch (s_Rune)
+                {
+                    case "Precision":
+                        aMouseMovement = GetCorrectMousePosition(-650, -200);
+                        break;
+                    case "Domination":
+                        aMouseMovement = GetCorrectMousePosition(-600, -200);
+                        break;
+                    case "Sorcery":
+                        aMouseMovement = GetCorrectMousePosition(-550, -200);
+                        break;
+                    case "Resolve":
+                        aMouseMovement = GetCorrectMousePosition(-500, -200);
+                        break;
+                    case "Inspiration":
+                        aMouseMovement = GetCorrectMousePosition(-450, -200);
+                        break;
+                }
+            }
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+        }
+
+
+    
+
+
+
+
         private void MouseInputs(string[] aMostWins, string s_Mode)
         {
             int[] aMouseMovement;
@@ -375,34 +482,8 @@ namespace Rune_Juice
                     string sRune = aMostWins[i];
                     if (i == 0)
                     {
-                        switch (sRune)
-                        {
-                            case "Precision":
-                                aMouseMovement = GetCorrectMousePosition(-500, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(1000);
-                                break;
-                            case "Domination":
-                                aMouseMovement = GetCorrectMousePosition(-250, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(1000);
-                                break;
-                            case "Sorcery":
-                                aMouseMovement = GetCorrectMousePosition(0, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(1000);
-                                break;
-                            case "Resolve":
-                                aMouseMovement = GetCorrectMousePosition(250, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(1000);
-                                break;
-                            case "Inspiration":
-                                aMouseMovement = GetCorrectMousePosition(500, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(1000);
-                                break;
-                        }
+                        SelectPrimaryRune(sRune);
+                        Thread.Sleep(1000);
                     }
                     else if (i < 5)
                     {
@@ -759,34 +840,8 @@ namespace Rune_Juice
 
                     if (i == 0)
                     {
-                        switch (sRune)
-                        {
-                            case "Precision":
-                                aMouseMovement = GetCorrectMousePosition(-600, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(500);
-                                break;
-                            case "Domination":
-                                aMouseMovement = GetCorrectMousePosition(-300, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(500);
-                                break;
-                            case "Sorcery":
-                                aMouseMovement = GetCorrectMousePosition(-100, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(500);
-                                break;
-                            case "Resolve":
-                                aMouseMovement = GetCorrectMousePosition(100, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(500);
-                                break;
-                            case "Inspiration":
-                                aMouseMovement = GetCorrectMousePosition(300, 0);
-                                SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-                                Thread.Sleep(500);
-                                break;
-                        }
+                        SelectPrimaryRune(sRune);
+                        Thread.Sleep(500);
                     }
                     else if (i < 5)
                     {
@@ -1203,8 +1258,6 @@ namespace Rune_Juice
                         System.IO.Stream str = Properties.Resources.iPappy;
                         snd = new System.Media.SoundPlayer(str);
                         snd.Play();
-
-
                         break;
                     case "BR":
                         s_Ping = "104.160.152.3";
@@ -1276,24 +1329,22 @@ namespace Rune_Juice
                         lv.Text = a_Champions[i];
                         lv.Name = a_Champions[i];
                         double d_Bans = Convert.ToDouble(a_Bans[i]) * 100;
-                        string s_Bans = string.Format("{0:F2}", d_Bans) + "%";
-                        lv.SubItems.Add(s_Bans + "%");
+                        string s_Bans = string.Format("{0:F2}", d_Bans) + " %";
+                        lv.SubItems.Add(s_Bans);
 
 
                         //counterList.Add(new List<string>() { a_Champion[i], a_WinRate[i] } );
                         listView_Bans.Items.Add(lv);
-                        Console.WriteLine(a_Champions[i] + " : " + s_Bans);
                     }
                 }
                 listView_Bans.ListViewItemSorter = new ListViewItemComparer(1, SortOrder.Descending);
                 listView_Bans.Visible = true;
 
+                listView_Bans.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                listView_Bans.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
 
                 
-
-
-
-                Console.WriteLine("DONE");
 
 
 
@@ -2608,12 +2659,11 @@ namespace Rune_Juice
                     "Champion Not Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            string strGroupID = "Hello";
 
-            string strID = strGroupID + "-";
-
-
+            
             s_PageName = SelectedRole + "|" + SelectedChampion + "|" + s_CurrentPatch;
+
+            /*
             s_PageName = Microsoft.VisualBasic.Interaction.InputBox(
                 "\nDO NOT MOVE THE CURSOR WHILE THE PAGE IS BEING CREATED!\n\n" +
                 s_ChampionSelect + s_ChampionSelect + "\n" +
@@ -2626,6 +2676,17 @@ namespace Rune_Juice
                        s_PageName,
                        -1,
                        -1);
+                       */
+
+            string input = "Do not move the cursor while the page is being created.\n" +
+                "\nChampion: " + s_SelectedChampion + "\n" +
+                "Role: " + s_SelectedRole + "\n" +
+                "Playstyle: Most " + s_PlayMode + "\n" +
+                "Patch: " + s_CurrentPatch +
+                "\n\nPress \"New\" to create a Rune Page." +
+                "\nPress \"Edit\" to edit a Rune Page.";
+            DialogResult dr_Result = ShowInputDialog(ref input, s_PageName);
+
             /*
             dr_Prompt = MessageBox.Show(
                 "Do not move the cursor while the page is being created.\n\n" +
@@ -2635,17 +2696,93 @@ namespace Rune_Juice
                 "\n\nPress \"OK\" to create the Rune Page.",
                 "Creating Rune Page...", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 */
-            if (s_PageName != "")
+            Console.WriteLine(dr_Result);
+            if (dr_Result == DialogResult.OK)
             {
+                b_NewRunePage = true;
                 CreateRunePage(s_PlayMode);
             }
-            return;
+            else if (dr_Result == DialogResult.Yes)
+            {
+                b_NewRunePage = false;
+                CreateRunePage(s_PlayMode);
+            }
         }
 
+ 
+
+
+        private static DialogResult ShowInputDialog(ref string input, string s_PageName)
+        {
+            System.Drawing.Size size = new System.Drawing.Size(250, 250);
+            Form inputBox = new Form();
+
+            inputBox.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            inputBox.BackgroundImage = Rune_Juice.Properties.Resources.SR;
+            inputBox.ForeColor = SystemColors.Info;
+            inputBox.ClientSize = size;
+            inputBox.Text = "Creating Rune Page...";
+
+            System.Windows.Forms.Label label = new Label();
+            label.BackColor = Color.Transparent;
+            label.Size = new System.Drawing.Size(size.Width - 5, 160);
+            label.Location = new System.Drawing.Point(5, 5);
+            label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            label.Text = input;
+            inputBox.Controls.Add(label);
 
 
 
+            System.Windows.Forms.TextBox textBox = new TextBox();
+            textBox.BackColor = System.Drawing.Color.DarkSlateGray;
+            textBox.ForeColor = SystemColors.Info;
+            textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            textBox.Size = new System.Drawing.Size(size.Width - 10, 23);
+            textBox.Location = new System.Drawing.Point(5, 170);
+            textBox.Text = s_PageName;
+            inputBox.Controls.Add(textBox);
 
+            Button okButton = new Button();
+            okButton.BackColor = System.Drawing.Color.DarkSlateGray;
+            okButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            okButton.Name = "okButton";
+            okButton.Size = new System.Drawing.Size(75, 23);
+            okButton.Text = "&New";
+            okButton.Location = new System.Drawing.Point(5, 205);
+            inputBox.Controls.Add(okButton);
+
+            Button editButton = new Button();
+            editButton.BackColor = System.Drawing.Color.DarkSlateGray;
+            editButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            editButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            editButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            editButton.Name = "editButton";
+            editButton.Size = new System.Drawing.Size(75, 23);
+            editButton.Text = "&Edit";
+            editButton.Location = new System.Drawing.Point(size.Width/2 - 37, 205);
+            inputBox.Controls.Add(editButton);
+
+            Button cancelButton = new Button();
+            cancelButton.BackColor = System.Drawing.Color.DarkSlateGray;
+            cancelButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            cancelButton.Name = "cancelButton";
+            cancelButton.Size = new System.Drawing.Size(75, 23);
+            cancelButton.Text = "&Cancel";
+            cancelButton.Location = new System.Drawing.Point(size.Width-80, 205);
+            inputBox.Controls.Add(cancelButton);
+
+            inputBox.AcceptButton = okButton;
+            inputBox.CancelButton = cancelButton;
+            inputBox.StartPosition = FormStartPosition.CenterScreen;
+
+            DialogResult result = inputBox.ShowDialog();
+            input = textBox.Text;
+            return result;
+        }
 
 
 
@@ -3491,6 +3628,7 @@ namespace Rune_Juice
 
 
         bool b_InChampSelect = true;
+        bool b_NewRunePage = true;
         private void button_button_ChampionSelectMode_Click(object sender, EventArgs e)
         {
             if (b_Fill)
@@ -3564,7 +3702,6 @@ namespace Rune_Juice
                         pictureBox_UpdateAvailable.Image = Rune_Juice.Properties.Resources.UptoDate;
                         for (int i = 0; i < a_AppVersion.Length - 1; i++)
                         {
-                            Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory + a_AppVersion[i] + ".exe");
                             File.Delete(AppDomain.CurrentDomain.BaseDirectory + "Rune Juice " + a_AppVersion[i] + ".exe");
                         }
                         b_UpToDate = false;
@@ -3575,7 +3712,6 @@ namespace Rune_Juice
                     }
                     else
                     {
-                        Console.WriteLine(s_DownloadURL);
                         b_UpToDate = true;
 
                         DialogResult dr_Prompt = MessageBox.Show(
@@ -3664,6 +3800,81 @@ namespace Rune_Juice
             GetChampionInfo("", false);
         }
 
-       
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            string input = "hede";
+            //ShowInputDialog(ref input, " FF");
+            int[] aMouseMovement;
+
+
+
+            /*
+             * COLLECTION MODE
+            //Toggle View
+            aMouseMovement = GetCorrectMousePosition(-700, 400);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+            // Precision
+            aMouseMovement = GetCorrectMousePosition(-650, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            // Domination
+            aMouseMovement = GetCorrectMousePosition(-600, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            // Sorcery
+            aMouseMovement = GetCorrectMousePosition(-550, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+            
+            // Resolve
+            aMouseMovement = GetCorrectMousePosition(-500, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            
+            // Inspiration
+            aMouseMovement = GetCorrectMousePosition(-450, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+
+
+
+
+            /*
+            // Champ Select Mode
+
+            // Toggle View
+            aMouseMovement = GetCorrectMousePosition(-575, 400);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            // Precision
+            aMouseMovement = GetCorrectMousePosition(-500, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            // Domination
+            aMouseMovement = GetCorrectMousePosition(-450, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            // Sorcery
+            aMouseMovement = GetCorrectMousePosition(-400, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            // Resolve
+            aMouseMovement = GetCorrectMousePosition(-350, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+
+            // Inspiration
+            aMouseMovement = GetCorrectMousePosition(-300, -200);
+            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+            */
+
+
+
+
+
+
+
+
+
+        }
     }
 }

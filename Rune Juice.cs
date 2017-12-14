@@ -27,7 +27,11 @@ namespace Rune_Juice
         public Form1()
         {
             InitializeComponent();
+
+            // Set Default Config
             comboBox_Resolution.Text = "1280X720";
+            comboBox_League.Text = "Platinum+";
+            comboBox_Ping.Text = "NA";
 
 
             // The ToolTip setting. You can do this as many times as you want
@@ -49,34 +53,13 @@ namespace Rune_Juice
             ResizeListViewColumns(listView_MostFreqSec, "Secondary");
             ResizeListViewColumns(listView_MostWinsPri, "Primary");
             ResizeListViewColumns(listView_MostWinsSec, "Secondary");
-
-
+            
 
             CheckAppVersion();
 
+            GetConfigFile();
 
 
-
-
-
-            //UpdateRuneTreeColor("Primary", listView_MostFreqPri);
-            //UpdateRuneTreeColor("Secondary", listView_MostFreqSec);
-            //UpdateRuneTreeColor("Primary", listView_MostWinsPri);
-            //UpdateRuneTreeColor("Secondary", listView_MostWinsSec);
-
-
-            //listView1.Columns[0].ImageKey = 0;
-
-
-
-
-
-
-
-
-
-            comboBox_League.Text = "Platinum+";
-            comboBox_Ping.Text = "NA";
             createChampionList("FILL");
 
             uint CurrVol = 0;
@@ -1091,7 +1074,7 @@ namespace Rune_Juice
                             case "Unflinching":
                             case "Hextech Flashtraption":
                             case "Overheal":
-                                aMouseMovement = GetCorrectMousePosition(-200, -100);
+                                aMouseMovement = GetCorrectMousePosition(-205, -100);
                                 SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
                                 break;
 
@@ -1601,14 +1584,15 @@ namespace Rune_Juice
 
 
 
-
+        string s_WikiURL = "";
         private void GetChampionImages(PictureBox pictureBox, string s_PictureURL, string s_PictureType)
         {
             try
             {
                 if (s_PictureType == "Champion")
                 {
-                    helperTip.SetToolTip(pictureBox, "http://leagueoflegends.wikia.com/wiki/" + SelectedChampion);
+                    s_WikiURL = "http://leagueoflegends.wikia.com/wiki/" + SelectedChampion;
+                    helperTip.SetToolTip(pictureBox, s_WikiURL);
                     var request = WebRequest.Create("http://ddragon.leagueoflegends.com/cdn/" + s_PictureURL);
                     using (var response = request.GetResponse())
                     using (var stream = response.GetResponseStream()) pictureBox.Image = Bitmap.FromStream(stream);
@@ -1689,7 +1673,7 @@ namespace Rune_Juice
         private void GetMasteryInfo()
         {
             string s_SelectedSummoner = GetSelectedSummoner();
-
+            SetConfigFile();
             string s_FilterChampion = "<a href=\"/champion?champion=";
             string sFilterEndChampion = "/a>";
             string sData = "";
@@ -1708,6 +1692,7 @@ namespace Rune_Juice
             string s_FilterLevel = "<td>";
             string s_FilterLevelEnd = "</td>";
 
+            tabControl1.SelectedIndex = 4;
 
 
 
@@ -2075,17 +2060,17 @@ namespace Rune_Juice
                     SetChampion(a_Pictures);
                     SetRunes(a_MostWins, a_MostFreq);
                     // Abilities
-                    if (tabControl1.SelectedIndex == 0)
+                    if (tabControl1.SelectedIndex == 1)
                     {
                         SetCounters(a_Champion, a_WinRate);
                     }
                     // Counters
-                    else if (tabControl1.SelectedIndex == 1)
+                    else if (tabControl1.SelectedIndex == 2)
                     {
                         SetAbilities(a_Pictures, a_Abilities);
                     }
                     // Item Builds
-                    else if (tabControl1.SelectedIndex == 2)
+                    else if (tabControl1.SelectedIndex == 3)
                     {
                         SetItems(a_Pictures);
                     }
@@ -2838,6 +2823,10 @@ namespace Rune_Juice
 
         #region UI Functions  
 
+        private void comboBox_Resolution_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            SetConfigFile();
+        }
 
         private void comboBox_Ping_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -2846,6 +2835,7 @@ namespace Rune_Juice
                 aTimer.Stop();
                 button_Ping.BackColor = System.Drawing.Color.DarkSlateGray;
                 button_Ping.Invoke(new MethodInvoker(delegate { button_Ping.Text = "Check Ping"; }));
+                SetConfigFile();
             }
             catch (Exception ex)
             {
@@ -2853,26 +2843,21 @@ namespace Rune_Juice
             }
         }
 
-
-
         private void comboBox_League_SelectionChangeCommitted(object sender, EventArgs e)
         {
             string s_Champion = SelectedChampion;
             string s_Role = SelectedRole;
-
+            SetConfigFile();
             createChampionList("FILL");
-
             comboBox_Champion.Text = s_Champion;
             comboBox_Roles.Text = s_Role;
             GetChampionInfo("", true);
-
         }
 
         private void ComboBox_Champion_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Console.WriteLine("Select Champion from droplist.");
             GetChampionInfo("", true);
-            //comboBox_Champion.ResetText();
         }
 
         private void ComboBox_Roles_SelectionChangeCommitted(object sender, EventArgs e)
@@ -2944,7 +2929,7 @@ namespace Rune_Juice
                 comboBox_Resolution.BackColor = c_BackColor;
                 comboBox_Champion.BackColor = c_BackColor;
                 comboBox_Roles.BackColor = c_BackColor;
-                comboBox_Summoner.BackColor = c_BackColor;
+                textBox_Summoner.BackColor = c_BackColor;
                 comboBox_League.BackColor = c_BackColor;
                 comboBox_Ping.BackColor = c_BackColor;
 
@@ -2971,7 +2956,7 @@ namespace Rune_Juice
                 comboBox_Resolution.BackColor = c_BackColor;
                 comboBox_Champion.BackColor = c_BackColor;
                 comboBox_Roles.BackColor = c_BackColor;
-                comboBox_Summoner.BackColor = c_BackColor;
+                textBox_Summoner.BackColor = c_BackColor;
                 comboBox_League.BackColor = c_BackColor;
                 comboBox_Ping.BackColor = c_BackColor;
 
@@ -3572,7 +3557,7 @@ namespace Rune_Juice
 
         private void pictureBox_Champion_Click_1(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://leagueoflegends.wikia.com/wiki/" + SelectedChampion);
+            System.Diagnostics.Process.Start(s_WikiURL);
         }
 
         private void TabControl1_SelectedIndexChanged(Object sender, EventArgs e)
@@ -3580,17 +3565,17 @@ namespace Rune_Juice
             try
             {
                 // Abilities
-                if (tabControl1.SelectedIndex == 0)
+                if (tabControl1.SelectedIndex == 1)
                 {
                     SetCounters(a_Champion, a_WinRate);
                 }
                 // Counters
-                else if (tabControl1.SelectedIndex == 1)
+                else if (tabControl1.SelectedIndex == 2)
                 {
                     SetAbilities(a_Pictures, a_Abilities);
                 }
                 // Item Builds
-                else if (tabControl1.SelectedIndex == 2)
+                else if (tabControl1.SelectedIndex == 3)
                 {
                     SetItems(a_Pictures);
                 }
@@ -3654,10 +3639,6 @@ namespace Rune_Juice
 
         private void button_Update_Click(object sender, EventArgs e)
         {
-
-
-
-
             CheckAppVersion();
         }
 
@@ -3800,81 +3781,64 @@ namespace Rune_Juice
             GetChampionInfo("", false);
         }
 
+        string path = AppDomain.CurrentDomain.BaseDirectory + "log.txt";
+
+        
         private void button1_Click(object sender, EventArgs e)
         {
-
-            string input = "hede";
-            //ShowInputDialog(ref input, " FF");
-            int[] aMouseMovement;
-
-
-
-            /*
-             * COLLECTION MODE
-            //Toggle View
-            aMouseMovement = GetCorrectMousePosition(-700, 400);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-            // Precision
-            aMouseMovement = GetCorrectMousePosition(-650, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
-            // Domination
-            aMouseMovement = GetCorrectMousePosition(-600, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
-            // Sorcery
-            aMouseMovement = GetCorrectMousePosition(-550, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
             
-            // Resolve
-            aMouseMovement = GetCorrectMousePosition(-500, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
             
-            // Inspiration
-            aMouseMovement = GetCorrectMousePosition(-450, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
+        }
 
 
-
-
-
-            /*
-            // Champ Select Mode
-
-            // Toggle View
-            aMouseMovement = GetCorrectMousePosition(-575, 400);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
-            // Precision
-            aMouseMovement = GetCorrectMousePosition(-500, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
-            // Domination
-            aMouseMovement = GetCorrectMousePosition(-450, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
-            // Sorcery
-            aMouseMovement = GetCorrectMousePosition(-400, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
-            // Resolve
-            aMouseMovement = GetCorrectMousePosition(-350, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-
-            // Inspiration
-            aMouseMovement = GetCorrectMousePosition(-300, -200);
-            SendLeftClick(aMouseMovement[0], aMouseMovement[1]);
-            */
-
-
-
-
-
-
-
-
+        private void SetConfigFile()
+        {
+            try
+            {
+                string[] s_Configuration = { comboBox_Resolution.Text + "|" + comboBox_League.Text + "|" + comboBox_Ping.Text + "|" + textBox_Summoner.Text };
+                Console.WriteLine(path);
+                if (!(File.Exists(path)))
+                {
+                    var myFile = File.Create(path);
+                    myFile.Close();
+                    System.IO.File.WriteAllText(path, s_Configuration[0]);
+                }
+                s_Configuration = System.IO.File.ReadAllLines(path);
+                s_Configuration[0] = comboBox_Resolution.Text + "|" + comboBox_League.Text + "|" + comboBox_Ping.Text + "|" + textBox_Summoner.Text;
+                System.IO.File.WriteAllText(path, s_Configuration[0]);
+                Console.WriteLine(s_Configuration[0]);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+        private void GetConfigFile()
+        {
+            try
+            {
+                string s_ConfigFileContent = System.IO.File.ReadAllText(path);
+                string[] a_ConfigSettings = s_ConfigFileContent.Split('|');
+                comboBox_Resolution.Text = a_ConfigSettings[0];
+                comboBox_League.Text = a_ConfigSettings[1];
+                comboBox_Ping.Text = a_ConfigSettings[2];
+                textBox_Summoner.Text = a_ConfigSettings[3];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
         }
+
+
+
+
+
+
+
+
+
+
     }
 }
